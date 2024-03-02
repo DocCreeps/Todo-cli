@@ -1,2 +1,0 @@
-code rust	false
-make coffee	false
