@@ -1,3 +1,2 @@
-make coffee	true
-code rust	true
-make cola	true
+code rust	false
+make coffee	false

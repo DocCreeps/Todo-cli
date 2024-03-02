@@ -14,7 +14,7 @@ struct Todo {
 impl Todo {
     //Une méthode pour ajouter une tâche à la liste
     fn insert(&mut self, key: String) {
-        self.map.insert(key, true);
+        self.map.insert(key, false);
     }
 
     //Une méthode pour stocker les tâches dans un fichier
@@ -54,6 +54,13 @@ impl Todo {
         Ok(Todo { map })
     }
 
+    //Une méthode pour marquer une tâche comme faite
+    fn complete(&mut self, key: &String) -> Option<()> {
+        match self.map.get_mut(key) {
+            Some(v) => Some(*v = true),
+            None => None,
+        }
+    }
 
 }
 fn main() {
@@ -68,5 +75,13 @@ fn main() {
             Err(why) => println!("Une erreur à été rencontrer: {}", why),
         }
     }
-
+    else if action == "complete" {
+        match todo.complete(&item) {
+            None => println!("'{}' n'est pas prèsent dans la list", item),
+            Some(_) => match todo.save() {
+                Ok(_) => println!("todo sauvegarder"),
+                Err(why) => println!("Une erreur à été rencontrer: {}", why),
+            },
+        }
+    }
 }
