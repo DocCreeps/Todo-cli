@@ -1,14 +1,13 @@
 //Un programme pour gérer une liste de tâches à faire
 //Il doit pouvoir ajouter, lister et marquer des tâches comme faites
 
-//On utilise une HashMap pour stocker les tâches
 use std::collections::HashMap;
 use std::io::Read;
 use std::str::FromStr;
 
 
 struct Todo {
-    //Un champ pour stocker les tâches
+    //On utilise une HashMap pour stocker les tâches
     map: HashMap<String, bool>,
 }
 
@@ -28,22 +27,33 @@ impl Todo {
         std::fs::write("db.txt", content)
     }
 
+
     fn new() -> Result<Todo, std::io::Error> {
+        // Ouvre le fichier "db.txt" en mode écriture, création et lecture
         let mut f = std::fs::OpenOptions::new()
             .write(true)
             .create(true)
             .read(true)
             .open("db.txt")?;
+
+        // Initialise une chaîne de caractères pour stocker le contenu du fichier
         let mut content = String::new();
+
+        // Lit le contenu du fichier dans la chaîne de caractères
         f.read_to_string(&mut content)?;
+
+        // Transforme le contenu en une HashMap<String, bool>
         let map: HashMap<String, bool> = content
             .lines()
             .map(|line| line.splitn(2, '\t').collect::<Vec<&str>>())
             .map(|v| (v[0], v[1]))
             .map(|(k, v)| (String::from(k), bool::from_str(v).unwrap()))
             .collect();
+
+        // Retourne un résultat contenant la structure Todo avec la HashMap
         Ok(Todo { map })
     }
+
 
 }
 fn main() {
